@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Compila pipex.c con libft.a
-cc -o pipex pipex.c libft/libft.a
+cc -Wextra -Wall -Werror -o pipex pipex.c libft/libft.a
 
 # Verifica si la compilación fue exitosa
 if [ $? -eq 0 ]; then
-    echo "Compilación SIN banderas"
+    echo "Compilación con bandera exitosa!"
 else
     echo "Error: la compilación falló"
 fi
