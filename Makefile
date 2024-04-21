@@ -1,32 +1,35 @@
-NAME = libftprintf.a
-LIBFTPRINTF = ./printf/libftprintf.a
+LIB_NAME = libft.a
+LIBFT = ./libft/libft.a
+
 CC = gcc
 ARFLAGS = -rcs
-
+AR = ar
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = #####
+GREEN= \033[32m
+COLOR_RESET = \033[0m
+
+SRC = pipex.c
 
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
 
-$(NAME): $(LIBFTPRINTF) $(OBJ)
-	ar $(ARFLAGS) $(NAME) $(OBJ)
+all: $(LIBFT) $(LIB_NAME)
+	@$(CC) $(CFLAGS) $(SRC) $(LIB_NAME)
+	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
 
-####
-$(LIBFTPRINTF):
+
+
+$(LIBFT):
 	$(MAKE) -C libft
-	cp libft/libft.a $(NAME)
+	@cp libft/libft.a $(LIB_NAME)
 
 clean:
 	rm -f $(OBJ)
-####
 	$(MAKE) -C libft clean
 
 fclean: clean
-	rm -f $(NAME)
-####
+	rm -f $(LIB_NAME)
 	$(MAKE) -C libft fclean
 
 re: fclean all
