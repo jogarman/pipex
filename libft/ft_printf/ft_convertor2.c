@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:04:45 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/12 20:14:59 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:35:32 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	wf_unsg(unsigned int a)
 {
-	return (ft_putunsgnbr_fd(a, 1));
+	return (ft_putunsgnbr_fd(a, STDOUT_FILENO));
 }
 
 size_t	wf_x_lw(unsigned int a)

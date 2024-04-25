@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:48:00 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/04/21 21:36:39 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:36:35 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	ft_which_format(char c, va_list argument)
 
 static void	aux(char *ptr, int *n_charact)
 {
-	write(1, ptr, 1);
+	write(STDOUT_FILENO, ptr, 1);
 	*n_charact += 1;
 }
 
@@ -57,7 +57,7 @@ int	ft_printf(char const *str, ...)
 		{
 			if (str[i] == '%' && str[i + 1] == '%')
 			{
-				write(1, "%", 1);
+				write(STDOUT_FILENO, "%", 1);
 				n_charact++;
 			}
 			else

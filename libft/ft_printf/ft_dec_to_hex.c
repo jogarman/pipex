@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:32:54 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/08 11:55:00 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:35:51 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ size_t	ft_dec_to_hex(size_t n, int caps)
 		return (-1);
 	if (n < 16)
 	{
-		write(1, &base[n % 16], 1);
+		write(STDOUT_FILENO, &base[n % 16], 1);
 		return (1);
 	}
 	ret += ft_dec_to_hex(n / 16, caps);

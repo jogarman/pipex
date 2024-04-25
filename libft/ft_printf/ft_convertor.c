@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 01:00:48 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/08 11:54:00 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:35:02 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,22 @@ static int	num_len(int n)
 
 int	wf_char(char a)
 {
-	return (ft_putchar_fd(a, 1), 1);
+	return (ft_putchar_fd(a, STDOUT_FILENO), 1);
 }
 
 int	wf_str(char *a)
 {
 	if (a == NULL)
 	{
-		write(1, "(null)", 6);
+		write(STDOUT_FILENO, "(null)", 6);
 		return (6);
 	}
-	write(1, a, ft_strlen(a));
+	write(STDOUT_FILENO, a, ft_strlen(a));
 	return (ft_strlen(a));
 }
 
 int	wf_int(int a)
 {
-	ft_putnbr_fd((a), 1);
+	ft_putnbr_fd((a), STDOUT_FILENO);
 	return (num_len(a));
 }

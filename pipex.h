@@ -10,4 +10,6 @@
 # include "libft/ft_printf/ft_printf.h"
 # include "libft/get_next_line/get_next_line.h"
 
+# include "ft_print_vector.c" //utils
+
 #endif

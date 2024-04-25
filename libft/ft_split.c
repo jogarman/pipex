@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:46:32 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/02/15 20:10:54 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:22:39 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,11 @@ char	**ft_split(char const *s, char c)
 	ret[j] = NULL;
 	return (ret);
 }
-/*
+
+/* #include <stdio.h>
 int		main()
 {
-	char	**string = ft_split(NULL, ' ');
+	char	**string = ft_split("hola", ' ');
 	int		i = 0;
 
 	while (string[i] != NULL)
@@ -103,7 +104,6 @@ int		main()
 	}
 	if (string[i] == NULL)
 	{
-		   printf("%d>Null\n", i);
+		printf("%d>Null\n", i);
 	}
-}
-*/
+} */

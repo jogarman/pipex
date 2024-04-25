@@ -5,7 +5,11 @@ cc -Wextra -Wall -Werror -o pipex pipex.c libft/libft.a
 
 # Verifica si la compilación fue exitosa
 if [ $? -eq 0 ]; then
-    echo "Compilación con bandera exitosa!"
+    echo "Compilación CON banderas exitosa!"
+    echo "./pipex infile '$1'"
+    echo '------------------------ '
+    ./pipex infile "$1"
+    rm pipex
 else
     echo "Error: la compilación falló"
 fi

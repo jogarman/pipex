@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:09:22 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/12 18:49:55 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/25 16:05:50 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,3 @@ size_t	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
-
-/*
-int main(void)
-{
-	printf("%zu", ft_strlen(""));
-}*/
