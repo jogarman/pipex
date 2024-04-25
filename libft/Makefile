@@ -41,7 +41,7 @@ OBJ += $(SRC_GNL:.c=.o)
 all: $(NAME)
 $(NAME): $(PRINTF_ADDR) $(OBJ)
 	@$(AR) $(ARFLAGS) $(NAME) $(OBJ)
-	@echo "$(GREEN) Objects and $(NAME) succesfully done!$(COLOR_RESET)"
+	@echo "$(GREEN) Libft objects and $(NAME) succesfully done!$(COLOR_RESET)"
 
 clean:
 	@rm -f $(OBJ)

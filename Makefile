@@ -1,5 +1,5 @@
 LIB_NAME = libft.a
-LIBFT = ./libft/libft.a # No sirve?
+LIBFT = ./libft/libft.a
 NAME = pipex
 
 CC = gcc
