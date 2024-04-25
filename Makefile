@@ -27,12 +27,11 @@ $(LIBFT):
 	@cp libft/libft.a $(LIB_NAME)
 
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ) $(OBJ_UTILS)
 	$(MAKE) -C libft clean
-	rm -f 
 
 fclean: clean
-	rm -f $(LIB_NAME)
+	@rm -f $(LIB_NAME)
 	$(MAKE) -C libft fclean
 
 re: fclean all
