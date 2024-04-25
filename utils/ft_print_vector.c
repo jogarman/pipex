@@ -1,7 +1,10 @@
-#include "pipex.h"
+#include "../pipex.h"
 
-/*  prints an array of arrays.
-	returns number of strings printed */
+/*
+	prints an array of arrays.
+	returns number of strings printed
+	"%d>%s<
+*/
 int		ft_print_vector(char **vector)
 {
 	int		i = 0;

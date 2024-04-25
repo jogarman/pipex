@@ -1,5 +1,6 @@
 LIB_NAME = libft.a
-LIBFT = ./libft/libft.a
+LIBFT = ./libft/libft.a # No sirve?
+NAME = pipex
 
 CC = gcc
 ARFLAGS = -rcs
@@ -9,13 +10,15 @@ CFLAGS = -Wall -Wextra -Werror
 GREEN= \033[32m
 COLOR_RESET = \033[0m
 
-SRC = pipex.c ft_print_vector.c
+SRC = pipex.c
+SRC_UTILS = $(addprefix utils/, ft_print_vector.c arraylen.c)
 
 OBJ = $(SRC:.c=.o)
+OBJ_UTILS = $(SRC_UTILS:.c=.o)
 
-
-all: $(LIBFT) $(LIB_NAME)
-	@$(CC) $(CFLAGS) $(SRC) $(LIB_NAME)
+all: $(NAME)
+$(NAME): $(LIBFT) $(LIB_NAME) $(OBJ) $(OBJ_UTILS) # si no exiten crealo
+	$(CC) $(CFLAGS) $(SRC) $(SRC_UTILS) $(LIB_NAME) -o $(NAME)
 	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
 
 
@@ -26,6 +29,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	$(MAKE) -C libft clean
+	rm -f 
 
 fclean: clean
 	rm -f $(LIB_NAME)
