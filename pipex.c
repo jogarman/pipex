@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/04/28 16:13:08 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/28 23:29:50 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,16 @@ void	exec_first_command(char* argv[], char **env)
 	arguments = insert_element_last_pos(arguments, argv[1]); // hacer free()?
 	execve(path_program, arguments, env);
 }
+
+/* 		//TESTER para ver si está bien
+		int retorno_hijo;
+		waitpid(fork1, &retorno_hijo, 0);
+		close(tube[WRITE_TUBE]);
+		char buffer[10];
+		read(tube[READ_TUBE], buffer, 10);
+		write(1, buffer, 10); */
 /*
+
 If  idtype  is	P_PID, waitid()	and wait6() wait for the child
 		 process with a	process	ID equal to (pid_t)id. [MAN]
 		 */
@@ -54,8 +63,8 @@ If  idtype  is	P_PID, waitid()	and wait6() wait for the child
 //argv[1] = infile
 //argv[2] = comando y flags
 
-#define READ_END	0			/*index pipe lectura*/
-#define WRITE_END	1			/*index pipe escritura*/
+#define READ_TUBE	0			/*index pipe lectura*/
+#define WRITE_TUBE	1			/*index pipe escritura*/
 #define FILE_NAME	"outfile"
 
 int	main(int argc, char* argv[], char **env)
@@ -63,45 +72,50 @@ int	main(int argc, char* argv[], char **env)
 	//(void)argc;	//eliminar
 	pid_t	fork1;
 	pid_t	fork2;
-	int 	fd1[2];
-	int 	fd2[2];
+	int 	tube[2];
 
-	pipe(fd1);
+	pipe(tube);
 	/////////////////////////////////////////
 	fork1 = fork();					// Hijo 1
 
 	if (fork1 == 0)
 	{
 		int fd_temp; //BORRAR
+
 		fd_temp = open("infile", O_RDONLY);
 		dup2(fd_temp, STDIN_FILENO);
 		close(fd_temp);
-		close(fd1[WRITE_END]);
-		dup2(fd1[STDOUT_FILENO], STDOUT_FILENO);
-		close(fd1[STDOUT_FILENO]);
+
+		close(tube[READ_TUBE]);
+
+ 		dup2(tube[WRITE_TUBE], STDOUT_FILENO);
+		close(tube[WRITE_TUBE]);
+
 		exec_first_command(argv, env);
 	}
 	else
-	{/////////////////////////////////////////
- 		fork2 = fork(); 			// Hijo 2
+	{////////////////////////////////////////////
+   		fork2 = fork(); 			// Hijo 2 //
 		if (fork2 == 0)
 		{
 			int fd_temp;
 			fd_temp = open("outfile", O_WRONLY);
 			dup2(fd_temp, STDOUT_FILENO);
 			close(fd_temp);
-			close(fd2[READ_END]);
-			dup2(fd2[STDOUT_FILENO], STDOUT_FILENO);
-			close(fd2[STDOUT_FILENO]);
+
+			close(tube[WRITE_TUBE]);
+			dup2(tube[READ_TUBE], STDOUT_FILENO);
+			close(tube[STDOUT_FILENO]);
 			char *args_execve[] = {"wc", "-w" "outfile", NULL};
 			execve("/bin/wc", args_execve, env);
 		}
-		else
-		{
+		////////////////////////////////////////
+									// Padre //
+		int retorno_hijo;
+		waitpid(fork1, &retorno_hijo, 0);
+		close(tube[WRITE_TUBE]);
+		dup2(tube[READ_TUBE], )
 
-		} ////////////////////////////////////
-									// Padre
-		close(fd1[WRITE_END]);
 
 
 	}
