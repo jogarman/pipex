@@ -1,0 +1,9 @@
+.vscode
+doc
+*.dSYM
+*.swp
+cc
+ccf
+infile
+outfile
+pipex

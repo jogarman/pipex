@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/04/28 16:13:08 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/04/27 22:45:16 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,64 +46,63 @@ void	exec_first_command(char* argv[], char **env)
 	arguments = insert_element_last_pos(arguments, argv[1]); // hacer free()?
 	execve(path_program, arguments, env);
 }
-/*
-If  idtype  is	P_PID, waitid()	and wait6() wait for the child
-		 process with a	process	ID equal to (pid_t)id. [MAN]
-		 */
 //argv[0] = nombre archivo (pipex.c)
 //argv[1] = infile
 //argv[2] = comando y flags
 
-#define READ_END	0			/*index pipe lectura*/
-#define WRITE_END	1			/*index pipe escritura*/
-#define FILE_NAME	"outfile"
+//por chat gpt. POR QUE TIENE QUE CERRAR Y ABRIR UN EXTREMO DEL PIPE?
+/*  if (pid == 0)
+	{ // Proceso hijo
+        close(pipefd[1]); // Cerrar el descriptor de escritura del hijo
 
+        // Leer datos del pipe
+        read(pipefd[0], buffer, sizeof(buffer));
+        printf("Hijo: Recibido mensaje del padre: %s\n", buffer);
+
+        close(pipefd[0]); // Cerrar el descriptor de lectura del hijo
+    }
+	else
+	{ // Proceso padre
+        close(pipefd[0]); // Cerrar el descriptor de lectura del padre
+
+        const char *msg = "Hola, hijo!"; // Mensaje a enviar al hijo
+
+        // Escribir datos en el pipe
+        write(pipefd[1], msg, strlen(msg) + 1);
+        printf("Padre: Mensaje enviado al hijo: %s\n", msg);
+
+        close(pipefd[1]); // Cerrar el descriptor de escritura del padre
+
+        // Esperar a que el hijo termine
+        waitpid(pid, &status, 0);
+    } */
 int	main(int argc, char* argv[], char **env)
 {
-	//(void)argc;	//eliminar
-	pid_t	fork1;
-	pid_t	fork2;
-	int 	fd1[2];
-	int 	fd2[2];
+	(void)argc;	//eliminar
+	pid_t	fork_id_1;
+	pid_t	fork_id_2;
+	int 	pipe_fd[2];
 
-	pipe(fd1);
-	/////////////////////////////////////////
-	fork1 = fork();					// Hijo 1
-
-	if (fork1 == 0)
+	fork_id_1 = fork();
+	pipe(pipe_fd);
+	if (fork_id_1 == 0)
 	{
-		int fd_temp; //BORRAR
-		fd_temp = open("infile", O_RDONLY);
-		dup2(fd_temp, STDIN_FILENO);
-		close(fd_temp);
-		close(fd1[WRITE_END]);
-		dup2(fd1[STDOUT_FILENO], STDOUT_FILENO);
-		close(fd1[STDOUT_FILENO]);
 		exec_first_command(argv, env);
 	}
 	else
-	{/////////////////////////////////////////
- 		fork2 = fork(); 			// Hijo 2
-		if (fork2 == 0)
+	{
+		close(pipe_fd[0]);
+		fork_id_2 = fork();
+		if (fork_id_2 == 0)
 		{
-			int fd_temp;
-			fd_temp = open("outfile", O_WRONLY);
-			dup2(fd_temp, STDOUT_FILENO);
-			close(fd_temp);
-			close(fd2[READ_END]);
-			dup2(fd2[STDOUT_FILENO], STDOUT_FILENO);
-			close(fd2[STDOUT_FILENO]);
-			char *args_execve[] = {"wc", "-w" "outfile", NULL};
-			execve("/bin/wc", args_execve, env);
+			exec_first_command(argv, env);
 		}
-		else
-		{
-
-		} ////////////////////////////////////
-									// Padre
-		close(fd1[WRITE_END]);
-
+		pipe_fd[1] = open("outfile", O_WRONLY); // Descriptor de escritura
 
 	}
-	return (0);
+/* 	close(pipefd[1]); // Cerrar el descriptor de escritura del hijo
+
+    read(pipefd[0], buffer, sizeof(buffer));
+
+    close(pipefd[0]); // Cerrar el descriptor de lectura del hijo */
 }
