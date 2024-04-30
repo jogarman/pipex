@@ -5,6 +5,7 @@
 # include <fcntl.h> // para leer y escribir
 # include <unistd.h>
 # include <string.h>
+# include <sys/wait.h>
 
 # include "libft/libft.h"
 # include "libft/ft_printf/ft_printf.h"
