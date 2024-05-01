@@ -43,7 +43,7 @@ void	exec_first_command(char* argv[], char **env)
 	command = ft_split(argv[2], ' ')[0];
 	path_program = ft_strjoin("/bin/", command);
 	arguments = ft_split(argv[2], ' ');	// Creamos la lista para pasar a execve
-	arguments = insert_element_last_pos(arguments, argv[1]); // hacer free()?
+	arguments = insert_element_last_pos(arguments, INFILE); // hacer free()?
 	execve(path_program, arguments, env);
 }
 
@@ -56,16 +56,14 @@ void	exec_second_command(char* argv[], char **env)
 	command = ft_split(argv[3], ' ')[0];
 	path_program = ft_strjoin("/bin/", command);
 	arguments = ft_split(argv[3], ' ');	
+	printf("hola caracola");
+	ft_print_vector(arguments);
 	execve(path_program, arguments, env);
 }
 
 //argv[0] = nombre archivo (pipex.c)
 //argv[1] = infile
 //argv[2] = comando y flags
-
-#define READ_TUBE	0			/*index pipe lectura*/
-#define WRITE_TUBE	1			/*index pipe escritura*/
-#define FILE_NAME	"outfile"
 
 int	main(int argc, char* argv[], char **env)
 {
@@ -82,7 +80,7 @@ int	main(int argc, char* argv[], char **env)
 	{
 		int fd_temp; //BORRAR
 
-		fd_temp = open("infile", O_RDONLY);
+		fd_temp = open(INFILE, O_RDONLY);
 		dup2(fd_temp, STDIN_FILENO);
 		close(fd_temp);
 		close(tube[READ_TUBE]);
@@ -106,7 +104,7 @@ int	main(int argc, char* argv[], char **env)
 		close(tube[WRITE_TUBE]);
 		dup2(tube[READ_TUBE], STDIN_FILENO);
 		close(tube[STDIN_FILENO]);
-		fd_temp = open("outfile", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+		fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 		dup2(fd_temp, STDOUT_FILENO);
 		//close(tube[WRITE_TUBE]);
 		exec_second_command(argv, env);

@@ -11,6 +11,10 @@
 # include "libft/ft_printf/ft_printf.h"
 # include "libft/get_next_line/get_next_line.h"
 
+# define READ_TUBE	0			/*index pipe lectura*/
+# define WRITE_TUBE	1			/*index pipe escritura*/
+# define OUTFILE	argv[4]
+# define INFILE		argv[1]
 
 int		arraylen(char **array);
 int		ft_print_vector(char **vector);

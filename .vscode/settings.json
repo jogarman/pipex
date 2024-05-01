@@ -3,5 +3,7 @@
 		"fcntl.h": "c",
 		"unistd.h": "c",
 		"utils": "c"
-	}
+	},
+	"workbench.view.alwaysShowHeaderActions": false,
+	"workbench.editor.enablePreviewFromQuickOpen": false
 }
