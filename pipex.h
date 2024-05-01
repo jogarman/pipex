@@ -17,9 +17,8 @@
 # define INFILE		argv[1]
 
 int		arraylen(char **array);
-int		ft_print_vector(char **vector);
-//# include "utils/ft_print_vector.c" //utils
-//# include "utils/arraylen.c" //utils
+int		ft_print_vector(char **vector);  //ELIMINAR: CONTIENE PRINTF
 
+//int     args_are_ok(argc);
 
 #endif

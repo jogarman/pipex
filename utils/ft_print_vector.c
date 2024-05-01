@@ -11,7 +11,8 @@ int		ft_print_vector(char **vector)
 
 	while (vector[i] != NULL)
 	{
-		printf("%d>%s<\n", i, vector[i]);
+		//write(2, vector[i], strlen(vector[i]));
+		//printf("%d>%s<\n", i, vector[i]);
 		i++;
 	}
 	printf("%d>Null\n", i);

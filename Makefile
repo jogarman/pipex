@@ -5,13 +5,13 @@ NAME = pipex
 CC = gcc
 ARFLAGS = -rcs
 AR = ar
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 GREEN= \033[32m
 COLOR_RESET = \033[0m
 
 SRC = pipex.c
-SRC_UTILS = $(addprefix utils/, ft_print_vector.c arraylen.c)
+SRC_UTILS = $(addprefix utils/, ft_print_vector.c arraylen.c) #elimar print__vector
 
 OBJ = $(SRC:.c=.o)
 OBJ_UTILS = $(SRC_UTILS:.c=.o)
@@ -20,7 +20,6 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(LIB_NAME) $(OBJ) $(OBJ_UTILS) # si no exiten crealo
 	@$(CC) $(CFLAGS) $(SRC) $(SRC_UTILS) $(LIB_NAME) -o $(NAME)
 	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
-
 
 $(LIBFT):
 	$(MAKE) -C libft

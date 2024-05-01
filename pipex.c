@@ -44,6 +44,8 @@ void	exec_first_command(char* argv[], char **env)
 	path_program = ft_strjoin("/bin/", command);
 	arguments = ft_split(argv[2], ' ');	// Creamos la lista para pasar a execve
 	arguments = insert_element_last_pos(arguments, INFILE); // hacer free()?
+
+	ft_print_vector(arguments);
 	execve(path_program, arguments, env);
 }
 
@@ -56,47 +58,51 @@ void	exec_second_command(char* argv[], char **env)
 	command = ft_split(argv[3], ' ')[0];
 	path_program = ft_strjoin("/bin/", command);
 	arguments = ft_split(argv[3], ' ');	
-	printf("hola caracola");
-	ft_print_vector(arguments);
+	write(2, "segundo comando", 15);
 	execve(path_program, arguments, env);
 }
 
-//argv[0] = nombre archivo (pipex.c)
-//argv[1] = infile
-//argv[2] = comando y flags
+void	fork1_call(char* argv[], char **env, int tube[2])
+{
+	int fd_temp;
+
+	fd_temp = open(INFILE, O_RDONLY);
+	dup2(fd_temp, STDIN_FILENO);
+	close(fd_temp);
+	close(tube[READ_TUBE]);
+	dup2(tube[WRITE_TUBE], STDOUT_FILENO);
+	close(tube[WRITE_TUBE]);
+	//write(2, "primer comando: \n", 15);
+	exec_first_command(argv, env);
+}
+
+void	args_are_ok(int argc)
+{
+	if (argc != 5)
+	{
+		write(2, "Error: wrong number of arguments.\n"
+			"Structure must be:\n"
+			"./pipex file1 command1 command2 file2\n", 92);
+		exit (1);
+	}
+}
 
 int	main(int argc, char* argv[], char **env)
 {
-	//(void)argc;	//eliminar
 	pid_t	fork1;
-	pid_t	fork2;
 	int 	tube[2];
 
+	args_are_ok(argc);
+
 	pipe(tube);
-	/////////////////////////////////////////
-	fork1 = fork();					// Hijo 1
+	fork1 = fork();
 
 	if (fork1 == 0)
 	{
-		int fd_temp; //BORRAR
-
-		fd_temp = open(INFILE, O_RDONLY);
-		dup2(fd_temp, STDIN_FILENO);
-		close(fd_temp);
-		close(tube[READ_TUBE]);
- 		dup2(tube[WRITE_TUBE], STDOUT_FILENO);
-		close(tube[WRITE_TUBE]);
-		exec_first_command(argv, env);
+		fork1_call(argv, env, tube);
 	}
 	else
-	{////////////////////////////////////////////////
-/*    		fork2 = fork(); 			// Hijo 2 //
-		if (fork2 == 0)
-		{
-
-		} */
-		////////////////////////////////////////////
-										// Padre //
+	{
 		int retorno_hijo;
 		int fd_temp;
 
