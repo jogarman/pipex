@@ -11,12 +11,10 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
-void	exec_second_command(char* argv[], char **env);
-/*
-	Takes array -arguments-, make malloc + 1. Copy every element,
-	add last element and add NULL
-*/
 
+/* SE  QUEDA COLGADO. eL FALLO ESTA POSIBLEMENTE EN EL SEGUNODO HIJO
+GRACE DIE QUE HAY QUE BUSCAR EN  EL PATH DONDE ESTA EL PROGRAMA QUE ESTAMOS
+BUSCANDO Y VER CON ACESS QUE TENEMOS PROVILEGIOS DE EJECUCION*/
 char	**insert_element_last_pos(char **arguments_input, char *last_element)
 {
 	int		i;
@@ -36,44 +34,92 @@ char	**insert_element_last_pos(char **arguments_input, char *last_element)
 
 void	exec_first_command(char* argv[], char **env)
 {
-	char	*path_program;
+	write(2, "exec_first_command", 15);
+/* 	char	*path_program;
 	char	*command;
 	char	**arguments;
 
 	command = ft_split(argv[2], ' ')[0];
 	path_program = ft_strjoin("/bin/", command);
-	arguments = ft_split(argv[2], ' ');	// Creamos la lista para pasar a execve
-	arguments = insert_element_last_pos(arguments, INFILE); // hacer free()?
-
-	ft_print_vector(arguments);
-	execve(path_program, arguments, env);
+	arguments = ft_split(argv[2], ' ');
+	//arguments = insert_element_last_pos(arguments, INFILE);
+	execve(path_program, arguments, env); */
 }
 
 void	exec_second_command(char* argv[], char **env)
 {
+	write(2, "nada", 4);
+}
+
+void	child1(char* argv[], char **env, int tube[2])
+{
+	int fd_temp;
+	fd_temp = open(INFILE, O_RDONLY);
+	if (fd_temp == -1)
+	{
+		perror("zsh");
+		exit(EXIT_FAILURE);
+	}
+	if (dup2(fd_temp, STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	close(fd_temp);
+	close(tube[READ_TUBE]);
+	if (dup2(tube[WRITE_TUBE], STDOUT_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	close(tube[WRITE_TUBE]);
+	//exec_first_command(argv, env);
+
+	char	*path_program;
+	char	*command;
+	char	**arguments;
+	command = ft_split(argv[2], ' ')[0];
+	path_program = ft_strjoin("/bin/", command);
+	arguments = ft_split(argv[2], ' ');
+	//arguments = insert_element_last_pos(arguments, INFILE);
+	execve(path_program, arguments, env); 
+	{
+		perror("execve failed");
+		exit(EXIT_FAILURE);
+	}
+
+
+
+}
+
+void	child2(char* argv[], char **env, int tube[2])
+{
+	int	fd_temp;
+
+
+	if (dup2(tube[READ_TUBE], STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	close(tube[READ_TUBE]);
+	fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (fd_temp == -1)
+		exit(EXIT_FAILURE);
+	if (dup2(fd_temp, STDOUT_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	close(fd_temp);
+	close(tube[WRITE_TUBE]);
+
 	char	*path_program;
 	char	*command;
 	char	**arguments;
 
-	command = ft_split(argv[3], ' ')[0];
+	command = ft_split(argv[3], ' ')[0];		
 	path_program = ft_strjoin("/bin/", command);
-	arguments = ft_split(argv[3], ' ');	
-	write(2, "segundo comando", 15);
+/* 	if (access(path_program, X_OK) == -1) 
+		{
+			write(2,"falla access", 10);
+		}
+ */
+	arguments = ft_split(argv[3], ' ');
+	//arguments = insert_element_last_pos(arguments, INFILE);
+	write(2, path_program, ft_strlen(path_program));
 	execve(path_program, arguments, env);
-}
-
-void	fork1_call(char* argv[], char **env, int tube[2])
-{
-	int fd_temp;
-
-	fd_temp = open(INFILE, O_RDONLY);
-	dup2(fd_temp, STDIN_FILENO);
-	close(fd_temp);
-	close(tube[READ_TUBE]);
-	dup2(tube[WRITE_TUBE], STDOUT_FILENO);
-	close(tube[WRITE_TUBE]);
-	//write(2, "primer comando: \n", 15);
-	exec_first_command(argv, env);
+	//exec_second_command(argv, env);         //
+	perror("execve failed");
+	exit(EXIT_FAILURE);
 }
 
 void	args_are_ok(int argc)
@@ -83,38 +129,39 @@ void	args_are_ok(int argc)
 		write(2, "Error: wrong number of arguments.\n"
 			"Structure must be:\n"
 			"./pipex file1 command1 command2 file2\n", 92);
-		exit (1);
+		exit (-1);
 	}
 }
 
 int	main(int argc, char* argv[], char **env)
 {
 	pid_t	fork1;
-	int 	tube[2];
+	pid_t	fork2;
+	int		tube[2];
+	int		status;
+	int		status2;
 
 	args_are_ok(argc);
-
-	pipe(tube);
+	if (pipe(tube) != 0)
+		exit(-1);
 	fork1 = fork();
-
+	if (fork1 == -1)
+		exit(-1);
 	if (fork1 == 0)
-	{
-		fork1_call(argv, env, tube);
-	}
+		child1(argv, env, tube);
 	else
 	{
-		int retorno_hijo;
-		int fd_temp;
 
-		waitpid(fork1, &retorno_hijo, 0);
-		close(tube[WRITE_TUBE]);
-		dup2(tube[READ_TUBE], STDIN_FILENO);
-		close(tube[STDIN_FILENO]);
-		fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-		dup2(fd_temp, STDOUT_FILENO);
-		//close(tube[WRITE_TUBE]);
-		exec_second_command(argv, env);
+		fork2 = fork();
+		if (fork2 == -1)
+			exit(-1);
+		if (fork2 == 0)
+			child2(argv, env, tube);
 	}
+
+	waitpid(fork2, &status2, 0);
+	waitpid(fork1, &status, 0);
+	
 	return (0);
 }
 

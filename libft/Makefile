@@ -36,7 +36,7 @@ SRC_TO_DEL = $(PRINTF_ADDR)/ft_dec_to_hex.c \
 
 OBJ = $(SRC_LIBFT:.c=.o)
 OBJ += $(SRC_PRINTF:.c=.o)
-OBJ += $(SRC_GNL:.c=.o)
+#OBJ += $(SRC_GNL:.c=.o)
 
 all: $(NAME)
 $(NAME): $(PRINTF_ADDR) $(OBJ)
