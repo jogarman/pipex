@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/03 20:19:56 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:47:40 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /* SE  QUEDA COLGADO. eL FALLO ESTA POSIBLEMENTE EN EL SEGUNODO HIJO
 GRACE DIE QUE HAY QUE BUSCAR EN  EL PATH DONDE ESTA EL PROGRAMA QUE ESTAMOS
 BUSCANDO Y VER CON ACESS QUE TENEMOS PROVILEGIOS DE EJECUCION*/
-/*
-*/
+
+
 char	**insert_element_last_pos(char **arguments_input, char *last_element)
 {
 	int		i;
@@ -34,22 +34,13 @@ char	**insert_element_last_pos(char **arguments_input, char *last_element)
 	return (argument_ret);
 }
 
-void	exec_first_command(char* argv[], char **env)
-{
-	write(2, "exec_first_command", 15);
-	execute(2, argv, env);
-
-}
-
-void	exec_second_command(char* argv[], char **env)
-{
-	write(2, "nada", 4);
-}
 
 void	child1(char* argv[], char **env, int tube[2])
 {
 	int fd_temp;
+	
 	fd_temp = open(INFILE, O_RDONLY);
+
 	if (fd_temp == -1)
 	{
 		perror("zsh");
@@ -62,9 +53,11 @@ void	child1(char* argv[], char **env, int tube[2])
 	if (dup2(tube[WRITE_TUBE], STDOUT_FILENO) == -1)
 		exit(EXIT_FAILURE);
 	close(tube[WRITE_TUBE]);
-	//exec_first_command(argv, env);
 
-	char	*path_program;
+	execute(2, argv, env);
+	
+
+	/* 	char	*path_program;
 	char	*command;
 	char	**arguments;
 	command = ft_split(argv[2], ' ')[0];
@@ -75,7 +68,7 @@ void	child1(char* argv[], char **env, int tube[2])
 	{
 		perror("execve failed");
 		exit(EXIT_FAILURE);
-	}
+	} */
 }
 
 void	child2(char* argv[], char **env, int tube[2])
@@ -143,7 +136,6 @@ int	main(int argc, char* argv[], char **env)
 		child1(argv, env, tube);
 	else
 	{
-
 		fork2 = fork();
 		if (fork2 == -1)
 			exit(-1);

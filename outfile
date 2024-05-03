@@ -1,16 +1,3 @@
-a.out
-cc
-ccf
-doc
-infile
-libft
-libft.a
-Makefile
-old_versions
-ooutfile
-outfile
-pipex
-pipex.c
-pipex.dSYM
-pipex.h
-utils
+linea 1
+linea 2
+linea 3
