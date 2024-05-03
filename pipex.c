@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/04/28 23:29:50 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:19:56 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 /* SE  QUEDA COLGADO. eL FALLO ESTA POSIBLEMENTE EN EL SEGUNODO HIJO
 GRACE DIE QUE HAY QUE BUSCAR EN  EL PATH DONDE ESTA EL PROGRAMA QUE ESTAMOS
 BUSCANDO Y VER CON ACESS QUE TENEMOS PROVILEGIOS DE EJECUCION*/
+/*
+*/
 char	**insert_element_last_pos(char **arguments_input, char *last_element)
 {
 	int		i;
@@ -35,15 +37,8 @@ char	**insert_element_last_pos(char **arguments_input, char *last_element)
 void	exec_first_command(char* argv[], char **env)
 {
 	write(2, "exec_first_command", 15);
-/* 	char	*path_program;
-	char	*command;
-	char	**arguments;
+	execute(2, argv, env);
 
-	command = ft_split(argv[2], ' ')[0];
-	path_program = ft_strjoin("/bin/", command);
-	arguments = ft_split(argv[2], ' ');
-	//arguments = insert_element_last_pos(arguments, INFILE);
-	execve(path_program, arguments, env); */
 }
 
 void	exec_second_command(char* argv[], char **env)
@@ -81,9 +76,6 @@ void	child1(char* argv[], char **env, int tube[2])
 		perror("execve failed");
 		exit(EXIT_FAILURE);
 	}
-
-
-
 }
 
 void	child2(char* argv[], char **env, int tube[2])

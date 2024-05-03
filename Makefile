@@ -10,20 +10,22 @@ AR = ar
 GREEN= \033[32m
 COLOR_RESET = \033[0m
 
-SRC = pipex.c
-SRC_UTILS = $(addprefix utils/, ft_print_vector.c arraylen.c) #elimar print__vector
+SRC = $(NAME).c
+SRC_UTILS = $(wildcard utils/*.c) $(wildcard utils/exec/*.c)
+#SRC_UTILS = $(addprefix utils/, ft_print_vector.c arraylen.c path_array.c ) #elimar print__vector
 
 OBJ = $(SRC:.c=.o)
 OBJ_UTILS = $(SRC_UTILS:.c=.o)
 
-all: $(NAME)
-$(NAME): $(LIBFT) $(LIB_NAME) $(OBJ) $(OBJ_UTILS) # si no exiten crealo
-	@$(CC) -g $(CFLAGS) $(SRC) $(SRC_UTILS) $(LIB_NAME) -o $(NAME) 
+all: $(NAME)														# significa que compile pipex.o
+$(NAME): $(LIBFT) $(LIB_NAME) $(OBJ) $(OBJ_UTILS) # si no ex. crealo  # -o $(NAME) en linea de abajo. Parece que sobra
+	@$(CC) $(CFLAGS) $(OBJ)  $(SRC_UTILS)  $(LIB_NAME) 
 	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
 #ojoo en la linea de compilacion el -g!!!
 
-$(LIBFT):
+$(LIBFT): $(OBJ_UTILS)
 	$(MAKE) -C libft
+	$(AR) $(ARFLAGS) $@ $(OBJ_UTILS)
 	@cp libft/libft.a $(LIB_NAME)
 
 clean:

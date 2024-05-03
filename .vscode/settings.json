@@ -2,8 +2,10 @@
 	"files.associations": {
 		"fcntl.h": "c",
 		"unistd.h": "c",
-		"utils": "c"
+		"utils": "c",
+		"pipex.h": "c"
 	},
 	"workbench.view.alwaysShowHeaderActions": false,
-	"workbench.editor.enablePreviewFromQuickOpen": false
+	"workbench.editor.enablePreviewFromQuickOpen": false,
+	"C_Cpp.errorSquiggles": "disabled"
 }

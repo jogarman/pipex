@@ -44,8 +44,8 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
-/*
-#include <stdio.h>
+
+/*  #include <stdio.h>
 #include <string.h>
 int		main()
 {
@@ -53,7 +53,7 @@ int		main()
  	//size_t max = strlen(s1) + 1;
 
 	//printf("%s\n", strnstr(s1, s1, max));
-	printf("Mia->%s\n", ft_strnstr(NULL, "mu", 0));
-	printf("Suya->%s\n", strnstr(NULL, "mu", 0));
+	printf("ft_strnstr->%s\n", ft_strnstr("hola mundo", "64654", 9));
+	//printf("strnstr->%s\n", strnstr("hola mundo", "mu", 9));
 
-}*/
+}  */
