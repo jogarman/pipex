@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arraylen.c                                         :+:      :+:    :+:   */
+/*   jft_print_vector.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/25 19:43:20 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/04/25 19:49:50 by jgarcia3         ###   ########.fr       */
+/*   Created: 2024/05/02 20:36:25 by jgarcia3          #+#    #+#             */
+/*   Updated: 2024/05/04 23:48:21 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "libft.h"
+#include "ft_printf/ft_printf.h"
 
 /*
-	returns lenght of an array of arrays
+	prints an array of arrays.
+	returns number of strings printed
+	"%d>%s<
 */
-int		arraylen(char **array)
+int	jft_print_vector(char **vector)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	while(array[i] != NULL)
+	while (vector[i] != NULL)
 		i++;
+	ft_printf("%d>Null\n", i);
 	return (i);
 }
+
+/* int  main()
+{
+	char	*arr[] = {"hola", "mundo", NULL};
+	jft_print_vector(arr);
+} */

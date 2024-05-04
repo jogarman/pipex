@@ -6,15 +6,26 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/04 20:18:53 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:44:42 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	child1(char* argv[], char **env, int tube[2])
+/*
+	Close FDs ands exit program printing given error
+*/
+void	dup2_fail(int tube[2], int fd_temp, char *fail_comment)
 {
-	int fd_temp;
+	close(tube[WRITE_TUBE]);
+	close(fd_temp);
+	ft_putstr_fd(fail_comment, 2);
+	exit(EXIT_FAILURE);
+}
+
+void	child1(char *argv[], char **env, int tube[2])
+{
+	int	fd_temp;
 
 	fd_temp = open(INFILE, O_RDONLY);
 	if (fd_temp == -1)
@@ -23,52 +34,42 @@ void	child1(char* argv[], char **env, int tube[2])
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd_temp, STDIN_FILENO) == -1)
-		exit(EXIT_FAILURE);
+		dup2_fail(tube, fd_temp, "Dup2 failed\n");
 	close(fd_temp);
 	close(tube[READ_TUBE]);
 	if (dup2(tube[WRITE_TUBE], STDOUT_FILENO) == -1)
-		exit(EXIT_FAILURE);
+		dup2_fail(tube, fd_temp, "Dup2 failed\n");
 	close(tube[WRITE_TUBE]);
-
 	execute(2, argv, env);
-
 }
 
-void	child2(char* argv[], char **env, int tube[2])
+/*
+O_APPEND >> BONUS just for here_doc >> 
+instead of O_trunc 
+*/
+void	child2(char *argv[], char **env, int tube[2])
 {
 	int	fd_temp;
-	char	*path_program;
-	char	*command;
-	char	**arguments;
-	
-	if (dup2(tube[READ_TUBE], STDIN_FILENO) == -1)
-		exit(EXIT_FAILURE);
+
+	if ((dup2(tube[READ_TUBE], STDIN_FILENO) == -1))
+		dup2_fail(tube, 1, "Dup2 failed\n");
 	close(tube[READ_TUBE]);
-	fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);		//O_APPEND >> BONUS solo para here_doc >>
+	fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (fd_temp == -1)
 	{
 		perror(OUTFILE);
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd_temp, STDOUT_FILENO) == -1)
-		exit(EXIT_FAILURE);
-	(close(tube[WRITE_TUBE]), close(fd_temp));
-	command = ft_split(COMMAND_2, ' ')[0];		
-	path_program = ft_strjoin("/bin/", command);    // No dejar FD abiertos en ningun caso. Son leaks
-	if (access(path_program, X_OK) == -1) 
-		{
-			perror("Can not access to path_program");
-			//perror("Can not access to path_program");
-			(free(command), free(path_program));
-			exit(EXIT_FAILURE);
-		}
-	arguments = ft_split(COMMAND_2, ' ');
-	execve(path_program, arguments, env); //PROBAR A BORRAR EL PATH Y ACCEDER
-	perror("execve failed");
-	(free(command), free(path_program));
-	exit(EXIT_FAILURE);
+		dup2_fail(tube, fd_temp, "Dup2 failed\n");
+	close(tube[WRITE_TUBE]);
+	close(fd_temp);
+	execute(3, argv, env);
 }
 
+/* 
+Check if number of arguments is ok
+*/
 void	args_are_ok(int argc)
 {
 	if (argc != 5)
@@ -80,12 +81,20 @@ void	args_are_ok(int argc)
 	}
 }
 
-int	main(int argc, char* argv[], char **env)
+void	close_tube_and_waitpid(int tube[2], pid_t fork1, pid_t fork2)
+{
+	close(tube[0]);
+	close(tube[1]);
+	waitpid(fork1, NULL, 0);
+	waitpid(fork2, NULL, 0);
+}
+
+int	main(int argc, char *argv[], char **env)
 {
 	pid_t	fork1;
 	pid_t	fork2;
 	int		tube[2];
-	
+
 	args_are_ok(argc);
 	if (pipe(tube) != 0)
 		exit(-1);
@@ -102,13 +111,7 @@ int	main(int argc, char* argv[], char **env)
 		if (fork2 == 0)
 			child2(argv, env, tube);
 		else if (fork2 > 0)
-		{
-			close(tube[0]);
-			close(tube[1]);
-			waitpid(fork1, NULL, 0);
-			waitpid(fork2, NULL, 0);
-		}
+			close_tube_and_waitpid(tube, fork1, fork2);
 	}
 	return (0);
 }
-

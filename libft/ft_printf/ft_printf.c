@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:48:00 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/04/23 15:36:35 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:26:33 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 static int	ft_which_format(char c, va_list argument)
 {
-	char	*s;
-
-	s = NULL;
 	if (c == 'c')
 		return (wf_char(va_arg(argument, int)));
 	else if (c == 's')

@@ -3,7 +3,8 @@
 		"fcntl.h": "c",
 		"unistd.h": "c",
 		"utils": "c",
-		"pipex.h": "c"
+		"pipex.h": "c",
+		"libft.h": "c"
 	},
 	"workbench.view.alwaysShowHeaderActions": false,
 	"workbench.editor.enablePreviewFromQuickOpen": false,
