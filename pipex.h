@@ -12,12 +12,12 @@
 //# include "libft/ft_printf/ft_printf.h"
 //# include "libft/get_next_line/get_next_line.h"
 
-# define READ_TUBE	0			/*index pipe lectura*/
-# define WRITE_TUBE	1			/*index pipe escritura*/
-# define OUTFILE	argv[4]
+# define READ_TUBE	0
+# define WRITE_TUBE	1
 # define INFILE		argv[1]
 # define COMMAND_1  argv[2]
 # define COMMAND_2  argv[3]
+# define OUTFILE	argv[4]
 
 #endif
 

@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/04 16:33:01 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:18:53 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,24 @@ void	child2(char* argv[], char **env, int tube[2])
 	close(tube[READ_TUBE]);
 	fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);		//O_APPEND >> BONUS solo para here_doc >>
 	if (fd_temp == -1)
+	{
+		perror(OUTFILE);
 		exit(EXIT_FAILURE);
+	}
 	if (dup2(fd_temp, STDOUT_FILENO) == -1)
 		exit(EXIT_FAILURE);
 	(close(tube[WRITE_TUBE]), close(fd_temp));
-	command = ft_split(argv[3], ' ')[0];		
-	path_program = ft_strjoin("/bin/", command);
+	command = ft_split(COMMAND_2, ' ')[0];		
+	path_program = ft_strjoin("/bin/", command);    // No dejar FD abiertos en ningun caso. Son leaks
 	if (access(path_program, X_OK) == -1) 
 		{
 			perror("Can not access to path_program");
+			//perror("Can not access to path_program");
 			(free(command), free(path_program));
 			exit(EXIT_FAILURE);
 		}
-	arguments = ft_split(argv[3], ' ');
-	execve(path_program, arguments, env);
+	arguments = ft_split(COMMAND_2, ' ');
+	execve(path_program, arguments, env); //PROBAR A BORRAR EL PATH Y ACCEDER
 	perror("execve failed");
 	(free(command), free(path_program));
 	exit(EXIT_FAILURE);

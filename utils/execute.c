@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/04 16:16:16 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:36:30 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ char	*where_is_comm(char *command, char **env)
 	while (path_arr[i] != NULL)
 	{
 		path_program = ft_strjoin(path_arr[i], command);
-		//arguments = ft_split(argv[arg_number], ' ');
 		if (access(path_program, X_OK) != -1)
 		{
 			return (path_program);
 		}
 		i++;
     }
-	perror("command not found in path");
-	return ("error: where_is_comm");
+	perror(command);
+	exit(EXIT_FAILURE);
+	//return ("error: where_is_comm");
 }
 
 /*
@@ -74,7 +74,7 @@ char	**path_array(char **env)
 			}
 		i++;
 	}
-	perror("**env does not contain PATH");
+	ft_putstr_fd("No such file or directory\n", 2);
 	exit(EXIT_FAILURE);
 }
 
@@ -88,14 +88,13 @@ int		execute(int arg_number, char *argv[], char **env)
 	char	*command;
 	char	**arguments;
 	
-	//path_arr = path_array(env);
 	command = ft_split(argv[arg_number], ' ')[0];
 	path_program = where_is_comm(command, env);
 	command = ft_strjoin("/", command);
 	arguments = ft_split(argv[arg_number], ' ');
 	execve(path_program, arguments, env);
 	{
-		perror("execve failed");
+		perror(COMMAND_1);
 		exit(EXIT_FAILURE);
 	}
 }
