@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/03 20:55:39 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:16:16 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ int		execute(int arg_number, char *argv[], char **env)
 	command = ft_strjoin("/", command);
 	arguments = ft_split(argv[arg_number], ' ');
 	execve(path_program, arguments, env);
-		{
-			perror("execve failed");
-			exit(EXIT_FAILURE);
-		}
+	{
+		perror("execve failed");
+		exit(EXIT_FAILURE);
+	}
 }
 
 /* 

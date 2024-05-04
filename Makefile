@@ -5,7 +5,7 @@ NAME = pipex
 CC = gcc
 ARFLAGS = -rcs
 AR = ar
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 GREEN= \033[32m
 COLOR_RESET = \033[0m
