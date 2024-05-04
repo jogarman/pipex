@@ -25,7 +25,7 @@ int		arraylen(char **array);
 int		ft_print_vector(char **vector);  //ELIMINAR: CONTIENE PRINTF
 char	**path_array(char **env);
 char	*where_is_comm(char *command, char **env);
-
+int		execute(int arg_number, char *argv[], char **env);
 /* 
 int     args_are_ok(int argc);
 void	child2(char* argv[], char **env, int tube[2]);

@@ -19,7 +19,7 @@ OBJ_UTILS = $(SRC_UTILS:.c=.o)
 
 all: $(NAME)														# significa que compile pipex.o
 $(NAME): $(LIBFT) $(LIB_NAME) $(OBJ) $(OBJ_UTILS) # si no ex. crealo  # -o $(NAME) en linea de abajo. Parece que sobra
-	@$(CC) $(CFLAGS) $(OBJ)  $(SRC_UTILS)  $(LIB_NAME) 
+	@$(CC) $(CFLAGS) $(OBJ)  $(SRC_UTILS)  $(LIB_NAME) -o $(NAME)
 	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
 #ojoo en la linea de compilacion el -g!!!
 

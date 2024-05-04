@@ -6,15 +6,11 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/03 20:47:40 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:39:24 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-/* SE  QUEDA COLGADO. eL FALLO ESTA POSIBLEMENTE EN EL SEGUNODO HIJO
-GRACE DIE QUE HAY QUE BUSCAR EN  EL PATH DONDE ESTA EL PROGRAMA QUE ESTAMOS
-BUSCANDO Y VER CON ACESS QUE TENEMOS PROVILEGIOS DE EJECUCION*/
 
 
 char	**insert_element_last_pos(char **arguments_input, char *last_element)
@@ -34,13 +30,11 @@ char	**insert_element_last_pos(char **arguments_input, char *last_element)
 	return (argument_ret);
 }
 
-
 void	child1(char* argv[], char **env, int tube[2])
 {
 	int fd_temp;
-	
-	fd_temp = open(INFILE, O_RDONLY);
 
+	fd_temp = open(INFILE, O_RDONLY);
 	if (fd_temp == -1)
 	{
 		perror("zsh");
@@ -75,7 +69,6 @@ void	child2(char* argv[], char **env, int tube[2])
 {
 	int	fd_temp;
 
-
 	if (dup2(tube[READ_TUBE], STDIN_FILENO) == -1)
 		exit(EXIT_FAILURE);
 	close(tube[READ_TUBE]);
@@ -93,16 +86,13 @@ void	child2(char* argv[], char **env, int tube[2])
 
 	command = ft_split(argv[3], ' ')[0];		
 	path_program = ft_strjoin("/bin/", command);
-/* 	if (access(path_program, X_OK) == -1) 
+ 	if (access(path_program, X_OK) == -1) 
 		{
-			write(2,"falla access", 10);
+			perror("Can not access to path_program");
+			exit(EXIT_FAILURE);
 		}
- */
 	arguments = ft_split(argv[3], ' ');
-	//arguments = insert_element_last_pos(arguments, INFILE);
-	write(2, path_program, ft_strlen(path_program));
 	execve(path_program, arguments, env);
-	//exec_second_command(argv, env);         //
 	perror("execve failed");
 	exit(EXIT_FAILURE);
 }
@@ -123,9 +113,8 @@ int	main(int argc, char* argv[], char **env)
 	pid_t	fork1;
 	pid_t	fork2;
 	int		tube[2];
-	int		status;
-	int		status2;
 
+	
 	args_are_ok(argc);
 	if (pipe(tube) != 0)
 		exit(-1);
@@ -136,15 +125,27 @@ int	main(int argc, char* argv[], char **env)
 		child1(argv, env, tube);
 	else
 	{
+		waitpid(fork1, NULL, 0);
 		fork2 = fork();
 		if (fork2 == -1)
 			exit(-1);
 		if (fork2 == 0)
 			child2(argv, env, tube);
+		else if (fork2 > 0)
+		{
+			close(p_fd[0]);
+			close(p_fd[1]);
+			waitpid(fork1, NULL, 0);
+			waitpid(fork2, NULL, 0);
+/* 			waitpid(pid1, &status, 0);
+			waitpid(pid2, &status, 0);
+			status = WEXITSTATUS(status); */
+		}
 	}
 
-	waitpid(fork2, &status2, 0);
-	waitpid(fork1, &status, 0);
+
+	//waitpid(fork1, NULL, 0) && waitpid(fork2, NULL, 0);
+	//waitpid(fork2, NULL, 0);
 	
 	return (0);
 }
