@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 23:48:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/11 20:36:53 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/11 21:28:05 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <stdio.h>
-# include <fcntl.h>
+# include <fcntl.h> // para leer y escribir
 # include <unistd.h>
 # include <string.h>
 # include <sys/wait.h>

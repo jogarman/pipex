@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "./pipex_bonus.h"
 
 /*
 	Close FDs ands exit program printing given error
@@ -69,8 +69,8 @@ void	last_child(char *argv[], char **env, int tube[2])
 
 void	close_tube_and_waitpid(int tube[2], pid_t fork1, pid_t fork2)
 {
-	close(tube[READ_TUBE]);
-	close(tube[WRITE_TUBE]);
+	close(tube[0]);
+	close(tube[1]);
 	waitpid(fork1, NULL, 0);
 	waitpid(fork2, NULL, 0);
 }
