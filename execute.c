@@ -6,11 +6,25 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/04 23:43:32 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:32:02 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+/* 
+Check if number of arguments is ok
+*/
+void	args_are_ok(int argc)
+{
+	if (argc != 5)
+	{
+		write(2, "Error: wrong number of arguments.\n"
+			"Structure must be:\n"
+			"./pipex file1 command1 command2 file2\n", 92);
+		exit (-1);
+	}
+}
 
 /*
 	returns -> char ** of values on PATH:
@@ -61,20 +75,27 @@ char	*where_is_comm(char *command, char **env)
 	char	**path_arr;
 	int		i;
 
-	path_arr = path_array(env);
-	command = ft_strjoin("/", command);
-	i = 0;
-	while (path_arr[i] != NULL)
+	if (access(command, X_OK) == 0)
 	{
-		path_program = ft_strjoin(path_arr[i], command);
-		if (access(path_program, X_OK) != -1)
-		{
-			return (path_program);
-		}
-		i++;
+		return (command);
 	}
-	perror(command);
-	exit(EXIT_FAILURE);
+	else
+	{
+		path_arr = path_array(env);
+		command = ft_strjoin("/", command);
+		i = 0;
+		while (path_arr[i] != NULL)
+		{
+			path_program = ft_strjoin(path_arr[i], command);
+			if (access(path_program, X_OK) != -1)
+			{
+				return (path_program);
+			}
+			i++;
+		}
+		perror(command);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /*
@@ -96,7 +117,7 @@ int	execute(int arg_number, char *argv[], char **env)
 		free(command);
 		free(path_program);
 		free(arguments);
-		perror(COMMAND_1);
+		perror(argv[arg_number]);
 		exit(EXIT_FAILURE);
 	}
 }

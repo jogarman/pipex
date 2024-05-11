@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 09:30:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/04 23:44:42 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:31:57 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	child1(char *argv[], char **env, int tube[2])
 {
 	int	fd_temp;
 
-	fd_temp = open(INFILE, O_RDONLY);
+	fd_temp = open(argv[1], O_RDONLY);
 	if (fd_temp == -1)
 	{
 		perror("zsh");
@@ -54,10 +54,10 @@ void	child2(char *argv[], char **env, int tube[2])
 	if ((dup2(tube[READ_TUBE], STDIN_FILENO) == -1))
 		dup2_fail(tube, 1, "Dup2 failed\n");
 	close(tube[READ_TUBE]);
-	fd_temp = open(OUTFILE, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	fd_temp = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (fd_temp == -1)
 	{
-		perror(OUTFILE);
+		perror(argv[4]);
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd_temp, STDOUT_FILENO) == -1)
@@ -65,20 +65,6 @@ void	child2(char *argv[], char **env, int tube[2])
 	close(tube[WRITE_TUBE]);
 	close(fd_temp);
 	execute(3, argv, env);
-}
-
-/* 
-Check if number of arguments is ok
-*/
-void	args_are_ok(int argc)
-{
-	if (argc != 5)
-	{
-		write(2, "Error: wrong number of arguments.\n"
-			"Structure must be:\n"
-			"./pipex file1 command1 command2 file2\n", 92);
-		exit (-1);
-	}
 }
 
 void	close_tube_and_waitpid(int tube[2], pid_t fork1, pid_t fork2)

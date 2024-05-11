@@ -13,14 +13,13 @@ COLOR_RESET = \033[0m
 SRC = pipex.c execute.c
 
 OBJ = $(SRC:.c=.o)
-OBJ_UTILS = $(SRC_UTILS:.c=.o)
 
 all: $(NAME)														# significa que compile pipex.o
 $(NAME): $(LIBFT) $(LIB_NAME) $(OBJ) $(OBJ_UTILS) # si no ex. crealo  # -o $(NAME) en linea de abajo. Parece que sobra
-	@$(CC) $(CFLAGS) $(OBJ)  $(SRC_UTILS)  $(LIB_NAME) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIB_NAME) -o $(NAME)
 	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
 
-$(LIBFT): $(OBJ_UTILS)
+$(LIBFT):
 	$(MAKE) -C libft
 	$(AR) $(ARFLAGS) $@ $(OBJ_UTILS)
 	@cp libft/libft.a $(LIB_NAME)

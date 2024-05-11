@@ -4,7 +4,9 @@
 		"unistd.h": "c",
 		"utils": "c",
 		"pipex.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"string.h": "c",
+		"stdio.h": "c"
 	},
 	"workbench.view.alwaysShowHeaderActions": false,
 	"workbench.editor.enablePreviewFromQuickOpen": false,
