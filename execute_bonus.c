@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/11 22:03:28 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:16:27 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,23 @@ char	*where_is_comm(char *command, char **env)
 			}
 			i++;
 		}
+		write(2, &command, strlen(command));
 		perror(command);
 		exit(EXIT_FAILURE);
 	}
+}
+
+int	jft_print_vector(char **vector)
+{
+	int		i;
+
+	i = 0;
+	while (vector[i] != NULL)
+	{
+		write(2, ft_strjoin(vector[i], "\n"), ft_strlen(vector[i]) + 1);
+		i++;
+	}
+	return (i);
 }
 
 /*
@@ -112,14 +126,20 @@ int	execute(int arg_number, char *argv[], char **env)
 	path_program = where_is_comm(command, env);
 	command = ft_strjoin("/", command);
 	arguments = ft_split(argv[arg_number], ' ');
+	///////// MUESTRA LOS ARGUMENTOS QUE INTRODUCE EN LA FUNCION ////////////
+	write(2, "-------\n", 8);
+	write(2, ft_itoa(arg_number), ft_strlen(ft_itoa(arg_number)));
+	write(2, "\n", 1);
+	write(2, ft_strjoin(argv[arg_number], "\n"), ft_strlen(argv[arg_number]) + 1);
+	write(2, "-------\n", 8);
+
 	execve(path_program, arguments, env);
-	{
-		free(command);
-		free(path_program);
-		free(arguments);
-		perror(argv[arg_number]);
-		exit(EXIT_FAILURE);
-	}
+	free(command);
+	free(path_program);
+	free(arguments);
+	perror(ft_strjoin("error in exevec -> ", argv[arg_number])); //leak?
+	exit(EXIT_FAILURE);
+	
 }
 
 /* 

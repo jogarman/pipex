@@ -6,7 +6,7 @@ BONUS = pipex_bonus
 CC = gcc
 ARFLAGS = -rcs
 AR = ar
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 GREEN= \033[32m
 COLOR_RESET = \033[0m
@@ -14,7 +14,7 @@ COLOR_RESET = \033[0m
 SRC = pipex.c execute.c
 OBJ = $(SRC:.c=.o)
 
-SRC_BONUS = pipex_bonus.c execute_bonus.c
+SRC_BONUS = pipex_bonus.c execute_bonus.c pipex_utils_bonus.c
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 all: $(NAME)
