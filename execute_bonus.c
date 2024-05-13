@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/12 17:16:27 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:12:09 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int	execute(int arg_number, char *argv[], char **env)
 	arguments = ft_split(argv[arg_number], ' ');
 	///////// MUESTRA LOS ARGUMENTOS QUE INTRODUCE EN LA FUNCION ////////////
 	write(2, "-------\n", 8);
+	write(2, "Numero de arg: ", 15);
 	write(2, ft_itoa(arg_number), ft_strlen(ft_itoa(arg_number)));
 	write(2, "\n", 1);
 	write(2, ft_strjoin(argv[arg_number], "\n"), ft_strlen(argv[arg_number]) + 1);
@@ -137,7 +138,7 @@ int	execute(int arg_number, char *argv[], char **env)
 	free(command);
 	free(path_program);
 	free(arguments);
-	perror(ft_strjoin("error in exevec -> ", argv[arg_number])); //leak?
+	perror(ft_strjoin("error in execve -> ", argv[arg_number])); //leak?
 	exit(EXIT_FAILURE);
 	
 }

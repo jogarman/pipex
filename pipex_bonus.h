@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 23:48:55 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/12 19:54:38 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:25:42 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@ char	*where_is_comm(char *command, char **env);
 int		execute(int arg_number, char *argv[], char **env);
 void	args_are_ok(int argc);
 int     get_n_tubes(int argc, char *argv[]);
+int		**get_tubes_arr(int n_tubes);
+int		get_init_pos_mid_command(char *argv[]);
+void	dup2_fail(int tube[2], int fd_temp, char *fail_comment);
 
 #endif
