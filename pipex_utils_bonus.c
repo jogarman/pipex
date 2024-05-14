@@ -15,7 +15,7 @@
 int		get_n_tubes(int argc, char *argv[])
 {
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		return (argc - 5); 
+		return (argc - 5);
 	return (argc - 4);
 }
 
@@ -24,7 +24,7 @@ int		**get_tubes_arr(int n_tubes)
 	int	**tubes_arr;
 	int i;
 	
-	tubes_arr = ft_calloc((size_t)n_tubes + 1, (size_t)sizeof(int *));
+	tubes_arr = ft_calloc((size_t)n_tubes, (size_t)sizeof(int *));
 	i = 0;
 	while (i != n_tubes) //para 3 comandos:
 						 // alloca 2 bytes para dos tubes
@@ -54,7 +54,7 @@ void	dup2_fail(int tube[2], int fd_temp, char *fail_comment)
 {
 	close(tube[WRITE_TUBE]);
 	close(fd_temp);
-	ft_putstr_fd(fail_comment, 2);
+	ft_putstr_fd(fail_comment, STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }
 

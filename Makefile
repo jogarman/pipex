@@ -5,7 +5,7 @@ BONUS = pipex_bonus
 CC = gcc
 ARFLAGS = -rcs
 AR = ar
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize="address"
 
 GREEN= \033[32m
 COLOR_RESET = \033[0m

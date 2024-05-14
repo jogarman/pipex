@@ -124,7 +124,6 @@ int	execute_b(int arg_number, char *argv[], char **env)
 
 	arguments = ft_split(argv[arg_number], ' ');
 	command = arguments[0];
-	dprintf(2, "CHECKPOINT %s\n", command);
 	path_program = where_is_comm_b(command, env);
 	command = ft_strjoin("/", command);
 	///////// MUESTRA LOS ARGUMENTOS QUE INTRODUCE EN LA FUNCION ////////////
@@ -138,7 +137,8 @@ int	execute_b(int arg_number, char *argv[], char **env)
 	free(command);
 	free(path_program);
 	free(arguments);
-	perror(ft_strjoin("error in execve -> ", argv[arg_number])); //leak?
+	// LIBERAR EL SPLIT!!!
+	perror(ft_strjoin("error in execve -> \n", argv[arg_number])); //leak?
 	exit(EXIT_FAILURE);
 }
 
