@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/13 19:12:09 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:28:23 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* 
 Check if number of arguments is ok
 */
-void	args_are_ok(int argc)
+void	args_are_ok_b(int argc)
 {
 	if (argc < 5)
 	{
@@ -41,7 +41,7 @@ void	args_are_ok(int argc)
 	/snap/bin
 	Null
 */
-char	**path_array(char **env)
+char	**path_array_b(char **env)
 {
 	int		i;
 	char	*path;
@@ -69,7 +69,7 @@ char	**path_array(char **env)
 	2 - first command
 	3 - second command
 */
-char	*where_is_comm(char *command, char **env)
+char	*where_is_comm_b(char *command, char **env)
 {
 	char	*path_program;
 	char	**path_arr;
@@ -81,7 +81,7 @@ char	*where_is_comm(char *command, char **env)
 	}
 	else
 	{
-		path_arr = path_array(env);
+		path_arr = path_array_b(env);
 		command = ft_strjoin("/", command);
 		i = 0;
 		while (path_arr[i] != NULL)
@@ -91,9 +91,9 @@ char	*where_is_comm(char *command, char **env)
 			{
 				return (path_program);
 			}
+			free(path_program);
 			i++;
 		}
-		write(2, &command, strlen(command));
 		perror(command);
 		exit(EXIT_FAILURE);
 	}
@@ -116,31 +116,30 @@ int	jft_print_vector(char **vector)
 	Execute the argument_number given with exevec
 	int		execute(int arg_number, char *argv[], char **env)
 */
-int	execute(int arg_number, char *argv[], char **env)
+int	execute_b(int arg_number, char *argv[], char **env)
 {
 	char	*path_program;
 	char	*command;
 	char	**arguments;
 
-	command = ft_split(argv[arg_number], ' ')[0];
-	path_program = where_is_comm(command, env);
-	command = ft_strjoin("/", command);
 	arguments = ft_split(argv[arg_number], ' ');
+	command = arguments[0];
+	dprintf(2, "CHECKPOINT %s\n", command);
+	path_program = where_is_comm_b(command, env);
+	command = ft_strjoin("/", command);
 	///////// MUESTRA LOS ARGUMENTOS QUE INTRODUCE EN LA FUNCION ////////////
-	write(2, "-------\n", 8);
-	write(2, "Numero de arg: ", 15);
-	write(2, ft_itoa(arg_number), ft_strlen(ft_itoa(arg_number)));
-	write(2, "\n", 1);
-	write(2, ft_strjoin(argv[arg_number], "\n"), ft_strlen(argv[arg_number]) + 1);
-	write(2, "-------\n", 8);
 
+	dprintf(2, "Execve: \nargv[arg_number]: %s\n", argv[arg_number]);
+	dprintf(2, "path_program: %s\n", path_program);
+	jft_print_vector(arguments);
+	
 	execve(path_program, arguments, env);
+
 	free(command);
 	free(path_program);
 	free(arguments);
 	perror(ft_strjoin("error in execve -> ", argv[arg_number])); //leak?
 	exit(EXIT_FAILURE);
-	
 }
 
 /* 

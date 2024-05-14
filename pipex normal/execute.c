@@ -91,11 +91,25 @@ char	*where_is_comm(char *command, char **env)
 			{
 				return (path_program);
 			}
+			free(path_program);
 			i++;
 		}
 		perror(command);
 		exit(EXIT_FAILURE);
 	}
+}
+
+int	jft_print_vector(char **vector)
+{
+	int		i;
+
+	i = 0;
+	while (vector[i] != NULL)
+	{
+		write(2, ft_strjoin(vector[i], "\n"), ft_strlen(vector[i]) + 1);
+		i++;
+	}
+	return (i);
 }
 
 /*
@@ -108,18 +122,22 @@ int	execute(int arg_number, char *argv[], char **env)
 	char	*command;
 	char	**arguments;
 
-	command = ft_split(argv[arg_number], ' ')[0];
-	path_program = where_is_comm(command, env);
-	command = ft_strjoin("/", command);
 	arguments = ft_split(argv[arg_number], ' ');
+	command = arguments[0];
+	path_program = where_is_comm(command, env);
+	command = ft_strjoin("/", command);// insertar flag a str_join_mod para hacer free
+
+	dprintf(2, "Execve: \nargv[arg_number]: %s\n", argv[arg_number]);
+	dprintf(2, "path_program: %s\n", path_program);
+	jft_print_vector(arguments);
+
 	execve(path_program, arguments, env);
-	{
-		free(command);
-		free(path_program);
-		free(arguments);
-		perror(argv[arg_number]);
-		exit(EXIT_FAILURE);
-	}
+
+	free(path_program);
+	free(arguments);
+//LIBERAR EL SPLIT
+	perror(argv[arg_number]);
+	exit(EXIT_FAILURE);
 }
 
 /* 

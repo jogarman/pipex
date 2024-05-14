@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <sys/wait.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"//OJOOOOOO
 
 # define READ_TUBE	0
 # define WRITE_TUBE	1

@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 19:41:58 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/13 19:24:24 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:24:03 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		**get_tubes_arr(int n_tubes)
 	
 	tubes_arr = ft_calloc((size_t)n_tubes + 1, (size_t)sizeof(int *));
 	i = 0;
-	while (i != n_tubes - 1) //para 3 comandos:
+	while (i != n_tubes) //para 3 comandos:
 						 // alloca 2 bytes para dos tubes
 						 //	genera los 2 pipes para los 2 tubes		
 	{
