@@ -3,7 +3,7 @@ PRINTF_ADDR = ./ft_printf
 PRINTF =  ft_printf
 GNL_ADDR = ./get_next_line
 
-CC = cc
+CC = gcc
 AR = ar
 ARFLAGS = rcs
 CFLAGS = -Wall -Wextra -Werror

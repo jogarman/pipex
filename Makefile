@@ -1,5 +1,4 @@
 NAME = pipex
-LIB_NAME = libft.a
 LIBFT = ./libft/libft.a
 BONUS = pipex_bonus
 
@@ -18,26 +17,24 @@ SRC_BONUS = pipex_bonus.c execute_bonus.c pipex_utils_bonus.c
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 all: $(NAME)
-$(NAME): $(LIBFT) $(LIB_NAME) $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIB_NAME) -o $(NAME)
+$(NAME): $(LIBFT) $(LIBFT) $(OBJ)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN) Pipex program created!$(COLOR_RESET)"
 
 bonus: $(BONUS)
-$(BONUS): $(LIBFT) $(LIB_NAME) $(OBJ_BONUS)
-	@$(CC) $(CFLAGS) $(OBJ_BONUS) $(LIB_NAME) -o $(BONUS)
+$(BONUS): $(LIBFT) $(LIBFT) $(OBJ_BONUS)
+	@$(CC) $(CFLAGS) $(OBJ_BONUS) $(LIBFT) -o $(BONUS)
 	@echo "$(GREEN) BONUS Pipex program created!$(COLOR_RESET)"
 
 $(LIBFT):
-	$(MAKE) -C libft
-	$(AR) $(ARFLAGS) $@ $(OBJ_UTILS)
-	@cp libft/libft.a $(LIB_NAME)
+	$(MAKE) -C ./libft
 
 clean:
 	@rm -f $(OBJ) $(OBJ_BONUS) $(NAME) $(BONUS)
 	$(MAKE) -C libft clean
 
 fclean: clean
-	@rm -f $(LIB_NAME)
+	@rm -f $(LIBFT)
 	$(MAKE) -C libft fclean
 
 re: fclean all

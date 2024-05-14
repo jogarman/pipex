@@ -14,11 +14,9 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	int		i;
 	char	jump;
 
 	jump = '\n';
-	i = 0;
 	ft_putstr_fd(s, fd);
 	write(fd, &jump, 1);
 }

@@ -35,9 +35,7 @@ static int	num_len(int n)
 {
 	long	j;
 	int		len;
-	int		neg;
 
-	neg = 0;
 	j = 1;
 	len = 0;
 	while ((long)n / j != 0)
