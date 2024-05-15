@@ -126,12 +126,7 @@ int	execute_b(int arg_number, char *argv[], char **env)
 	command = arguments[0];
 	path_program = where_is_comm_b(command, env);
 	command = ft_strjoin("/", command);
-	///////// MUESTRA LOS ARGUMENTOS QUE INTRODUCE EN LA FUNCION ////////////
 
-	dprintf(2, "Execve: \nargv[arg_number]: %s\n", argv[arg_number]);
-	dprintf(2, "path_program: %s\n", path_program);
-	jft_print_vector(arguments);
-	
 	execve(path_program, arguments, env);
 
 	free(command);
