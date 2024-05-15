@@ -24,7 +24,7 @@ int		**get_tubes_arr(int n_tubes)
 	int	**tubes_arr;
 	int i;
 	
-	tubes_arr = ft_calloc((size_t)n_tubes, (size_t)sizeof(int *));
+	tubes_arr = ft_calloc((size_t)n_tubes + 1, (size_t)sizeof(int *));
 	i = 0;
 	while (i != n_tubes) //para 3 comandos:
 						 // alloca 2 bytes para dos tubes
