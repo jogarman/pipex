@@ -26,9 +26,7 @@ int		**get_tubes_arr(int n_tubes)
 	
 	tubes_arr = ft_calloc((size_t)n_tubes + 1, (size_t)sizeof(int *));
 	i = 0;
-	while (i != n_tubes) //para 3 comandos:
-						 // alloca 2 bytes para dos tubes
-						 //	genera los 2 pipes para los 2 tubes		
+	while (i != n_tubes)
 	{
 		tubes_arr[i] = ft_calloc(2, sizeof(int));
 		if (pipe(tubes_arr[i]) != 0)
@@ -58,6 +56,31 @@ void	dup2_fail(int tube[2], int fd_temp, char *fail_comment)
 	exit(EXIT_FAILURE);
 }
 
+void	free_and_close_array(int **array)
+{
+	int		i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		close(array[i][0]);
+		close(array[i][1]);
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+/* Close FDs and exit program printing given error*/
+/* void	dup2_fail_mid(int tube[2], char *fail_comment)
+{
+	close(tube1[WRITE_TUBE]);
+	close(tube1[READ_TUBE]);
+	close(tube2);
+	ft_putstr_fd(fail_comment, STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+ */
 /* int 	main(int argc, char *argv[])
 {
     printf("%d", get_n_tubes(argc, argv));

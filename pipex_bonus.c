@@ -36,7 +36,7 @@ void	first_child(char *argv[], char **env, int tube_out[2])
 /* argv[arg_number] <- para el n_command */
 void	mid_child(char *argv[], char **env, int **tubes_arr, int i, int n_command)
 {
-	close(tubes_arr[i-1][WRITE_TUBE]);
+	close(tubes_arr[i - 1][WRITE_TUBE]);
 	if ((dup2(tubes_arr[i - 1][0], STDIN_FILENO) == -1))
 		dup2_fail(tubes_arr[i - 1], 1, "Dup2 tube_in failed, mid child\n");
 
@@ -72,14 +72,6 @@ void	last_child(char *argv[], char **env, int last_tube[2], int n_last_command)
 	execute_b(n_last_command, argv, env);
 }
 
-void	close_tube_and_waitpid(int tube[2], pid_t fork1, pid_t fork2)
-{
-	close(tube[0]);
-	close(tube[1]);
-	waitpid(fork1, NULL, 0);
-	waitpid(fork2, NULL, 0);
-}
-
 /* 
 3- O_APPEND >> BONUS just for here_doc >> 
 instead of O_trunc */
@@ -92,12 +84,14 @@ int	main(int argc, char *argv[], char **env)
 	int		**tubes_arr;
 	int		id;
 	int		n_command;
-
+	
 	args_are_ok_b(argc);
 	n_tubes = get_n_tubes(argc, argv);
 	tubes_arr = get_tubes_arr(n_tubes);
 	n_command = get_init_pos_mid_command(argv); // 3 sin here_doc, 4 con here_doc
 	
+	// close(tubes_arr[0][0]);
+	// close(tubes_arr[0][0]);
 	fork1 = fork();
 	if (fork1 == -1)
 		exit(-1);
@@ -116,14 +110,14 @@ int	main(int argc, char *argv[], char **env)
 		if (id == 0)
 		{
 			mid_child(argv, env, tubes_arr, i, n_command);
-			exit(EXIT_SUCCESS);
+			exit(EXIT_SUCCESS);  //Funciona sin él?
 		}
 		//close(tubes_arr[i-1][READ_TUBE]);
 		//close(tubes_arr[i][1]);
 		i++;
 		n_command++;
 	}
-	close(tubes_arr[i-1][WRITE_TUBE]);
+	close(tubes_arr[i - 1][WRITE_TUBE]);
 	fork2 = fork();
 	if (fork2 == -1)
 		exit(-1);
@@ -134,11 +128,8 @@ int	main(int argc, char *argv[], char **env)
 	}
 	if (fork2 > 0)
 	{
-		wait(NULL); //falta funcion free para cerrar todo el array de pipes en el padre
-		
-/* 		close_tube_and_waitpid(first_tube, fork1, fork2);
-		close_tube_and_waitpid(last_tube, fork1, fork2); */
+		wait(NULL);
+		free_and_close_array(tubes_arr);
 	}
-	/////////////////////////////
 	return (0);
 }

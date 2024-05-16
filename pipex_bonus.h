@@ -35,7 +35,6 @@ void	args_are_ok_b(int argc);
 int     get_n_tubes(int argc, char *argv[]);
 int		**get_tubes_arr(int n_tubes);
 int		get_init_pos_mid_command(char *argv[]);
-
-
+void	free_and_close_array(int **array);
 
 #endif
