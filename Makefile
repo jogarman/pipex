@@ -13,7 +13,7 @@ COLOR_RESET = \033[0m
 SRC = pipex.c execute.c
 OBJ = $(SRC:.c=.o)
 
-SRC_BONUS = pipex_bonus.c execute_bonus.c pipex_utils_bonus.c
+SRC_BONUS = pipex_bonus.c execute_bonus.c pipex_utils_bonus.c here_doc.c
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 all: $(NAME)
