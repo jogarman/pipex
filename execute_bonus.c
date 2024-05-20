@@ -6,11 +6,11 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:23:18 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/14 19:28:23 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:21:41 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex_bonus.h"
+#include "pipex_bonus.h"
 
 /* 
 Check if number of arguments is ok
@@ -76,9 +76,7 @@ char	*where_is_comm_b(char *command, char **env)
 	int		i;
 
 	if (access(command, X_OK) == 0)
-	{
 		return (command);
-	}
 	else
 	{
 		path_arr = path_array_b(env);
@@ -88,9 +86,7 @@ char	*where_is_comm_b(char *command, char **env)
 		{
 			path_program = ft_strjoin(path_arr[i], command);
 			if (access(path_program, X_OK) != -1)
-			{
 				return (path_program);
-			}
 			free(path_program);
 			i++;
 		}
@@ -102,11 +98,13 @@ char	*where_is_comm_b(char *command, char **env)
 int	jft_print_vector(char **vector)
 {
 	int		i;
+	char	*join;
 
 	i = 0;
 	while (vector[i] != NULL)
 	{
-		write(2, ft_strjoin(vector[i], "\n"), ft_strlen(vector[i]) + 1);
+		join = ft_strjoin(vector[i], "\n");
+		write(2, join, ft_strlen(join) + 1);
 		i++;
 	}
 	return (i);
@@ -121,19 +119,23 @@ int	execute_b(int arg_number, char *argv[], char **env)
 	char	*path_program;
 	char	*command;
 	char	**arguments;
+	char	*join;
+	int		i;
 
 	arguments = ft_split(argv[arg_number], ' ');
 	command = arguments[0];
 	path_program = where_is_comm_b(command, env);
 	command = ft_strjoin("/", command);
-
 	execve(path_program, arguments, env);
-
 	free(command);
 	free(path_program);
+	i = 0;
+	while (arguments[i])
+		free(arguments[i++]);
 	free(arguments);
-	// LIBERAR EL SPLIT!!!
-	perror(ft_strjoin("error in execve -> \n", argv[arg_number])); //leak?
+	join = ft_strjoin("error in execve -> \n", argv[arg_number]);
+	perror(join);
+	free(join);
 	exit(EXIT_FAILURE);
 }
 

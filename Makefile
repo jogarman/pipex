@@ -5,15 +5,20 @@ BONUS = pipex_bonus
 CC = gcc
 ARFLAGS = -rcs
 AR = ar
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize="address"
+CFLAGS = -Wall -Wextra -Werror
 
 GREEN= \033[32m
 COLOR_RESET = \033[0m
 
-SRC = pipex.c execute.c
+
 OBJ = $(SRC:.c=.o)
 
-SRC_BONUS = pipex_bonus.c execute_bonus.c pipex_utils_bonus.c here_doc.c
+SRC = pipex.c execute_bonus.c pipex_utils_bonus.c here_doc.c \
+	first_fork_bonus.c last_fork_bonus.c mid_fork_loop_caller_bonus.c
+
+SRC_BONUS = pipex_bonus.c execute_bonus.c pipex_utils_bonus.c here_doc.c \
+	first_fork_bonus.c last_fork_bonus.c mid_fork_loop_caller_bonus.c
+
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 all: $(NAME)

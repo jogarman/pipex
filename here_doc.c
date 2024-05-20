@@ -6,13 +6,13 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:23:40 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/05/20 00:39:42 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:37:26 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex_bonus.h"
+#include "pipex_bonus.h"
 
-int	open_temp(char *action)
+static int	open_temp(char *action)
 {
 	int		fd_open;
 
@@ -26,17 +26,16 @@ int	open_temp(char *action)
 	return (fd_open);
 }
 
-
-void	loop_write_to_temp(char *eof, int fd_temp)
+static void	loop_write_to_temp(char *eof, int fd_temp)
 {
 	int		bytes_read;
 	char	buffer[1024];
-	
+
 	while (1)
 	{
 		write(1, "> ", 2);
 		bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
-		if (bytes_read <= 0) 
+		if (bytes_read <= 0)
 		{
 			perror("read");
 			free(eof);
@@ -55,17 +54,14 @@ void	loop_write_to_temp(char *eof, int fd_temp)
 	}
 }
 
-
 /* returns fd of a temporary file with data to open by first child */
 void	here_doc(char *argv[])
 {
 	char	*eof;
 	int		fd_temp;
-	
+
 	eof = ft_strdup(argv[2]);
 	fd_temp = open_temp("create");
 	loop_write_to_temp(eof, fd_temp);
 	close(fd_temp);
 }
-
-
