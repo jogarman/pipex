@@ -1,0 +1,3 @@
+- Los codigos de salida cuando hace exit() no hacen exactamente lo que debería. Es el 127 cuando hay un error
+- Cuando no encuentra un comando, debe continuar con el siguiente, excepto en el ultimo. Si no encuentra el ultimo debe salir con el 127 (creo)
+- En here_doc, por algun motivo si hago intro sin escribir nada sale del programa
